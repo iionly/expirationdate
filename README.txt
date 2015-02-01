@@ -1,9 +1,9 @@
-Expirationdate plugin for Elgg 1.9
-Latest Version: 1.9.2
-Released: 2013-12-15
+Expirationdate plugin for Elgg 1.10
+Latest Version: 1.10.3
+Released: 2015-02-01
 Contact: iionly@gmx.de
 License: GNU General Public License version 2
-Copyright: (c) Brett Profitt (Original developer) / iionly (for Elgg 1.8+1.9)
+Copyright: (c) Brett Profitt (Original developer) / iionly (for Elgg 1.8 onwards)
 
 
 
@@ -50,6 +50,9 @@ This can be used to send out warning emails, etc.
 
 
 ** Changes **
+
+v1.10.3
+* Fixing of deprecation issues for the plugin to work without warnings on Elgg 1.10.
 
 v1.9.2
 * French translation updated (thank to emanwebdev).
