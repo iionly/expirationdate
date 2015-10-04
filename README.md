@@ -1,11 +1,15 @@
-Expirationdate plugin for Elgg 1.10
-Latest Version: 1.10.3
-Released: 2015-02-01
-Contact: iionly@gmx.de
-License: GNU General Public License version 2
+Expirationdate plugin for Elgg 1.10 - 1.12 and Elgg 2.X
+=======================================================
+
+Latest Version: 1.10.4  
+Released: 2015-09-17  
+Contact: iionly@gmx.de  
+License: GNU General Public License version 2  
 Copyright: (c) Brett Profitt (Original developer) / iionly (for Elgg 1.8 onwards)
 
 
+Description
+-----------
 
 The Expirationdate plugin can be used to define a date of expiration for entities and to delete them automatically via a cron job. The plugin provides no user interface on your site (apart from setting the desired cron interval in the admin section).
 
@@ -16,8 +20,8 @@ If you only intend to use the Expirationdate plugin in connection with another p
 If you intend to use the methods included in the Expirationdate plugin within your own plugin development, read on.
 
 
-
-** Usage **
+Usage
+-----
 
 Configure cron for Elgg as described in the Elgg documentation.
 
@@ -45,56 +49,3 @@ Each entity that has an expiration date will be passed through the plugin hook e
 array('expirationdate' => timestamp of expiration, 'entity' => entity object)
 
 This can be used to send out warning emails, etc.
-
-
-
-
-** Changes **
-
-v1.10.3
-* Fixing of deprecation issues for the plugin to work without warnings on Elgg 1.10.
-
-v1.9.2
-* French translation updated (thank to emanwebdev).
-
-v1.8.2
-* Some general code cleanup (as in 1.9.1),
-* French translation updated (thank to emanwebdev).
-
-v1.9.1
-* Updated for Elgg 1.9,
-* including some general code cleanup.
-
-v1.8.1
-* French translation added (thank to emanwebdev),
-* German translation added.
-
-v1.8
-* Updated for Elgg 1.8 (by iionly)
-
-------
-
-v1.6
-* Added ability to run cron silently by passing false to function.
-* Added elgg_version to manifest.xml.
-* Upped limit while expiring entities to 99999 in case of many unexpired entities.
-
-v1.5
-* Corrected typo in 15 minute cron trigger.
-
-v1.4
-* Correctly overriding the permissions instead of logging in the admin user. (Thanks Kevin Jardine!)
-
-v1.3
-* Added a check for expired entities before trying a foreach.
-
-v1.2
-* Changes the plugin hooks to send an array instead of just an object.
-
-v1.1
-* Added plugin hook expirationdate:expire_entity.
-* Added plugin hook expirationdate:will_expire_entity.
-* Corrected initial empty settings problem.
-
-v1.0
-* Initial release.
