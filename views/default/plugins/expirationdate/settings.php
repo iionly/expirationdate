@@ -5,10 +5,10 @@
  * @package ExpirationDate
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Brett Profitt
- * @copyright Brett Profitt 2008-2015
+ * @copyright Brett Profitt 2008
  * @link http://eschoolconsultants.com
  *
- * (c) iionly 2012-2015 for Elgg 1.8 onwards
+ * (c) iionly 2012 for Elgg 1.8 onwards
  */
 
 $period = elgg_get_plugin_setting('period', 'expirationdate');

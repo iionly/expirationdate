@@ -1,8 +1,8 @@
-Expirationdate plugin for Elgg 1.10 - 1.12 and Elgg 2.X
-=======================================================
+Expirationdate plugin for Elgg 2.3 and newer Elgg 2.X
+=====================================================
 
-Latest Version: 1.10.4  
-Released: 2015-09-17  
+Latest Version: 2.3.4  
+Released: 2017-02-12  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
 Copyright: (c) Brett Profitt (Original developer) / iionly (for Elgg 1.8 onwards)
@@ -18,6 +18,14 @@ For example this plugin can optionally be used with the Elggx Userpoints plugin.
 If you only intend to use the Expirationdate plugin in connection with another plugin that already has the expiration date mechanism implemented, you only need to enable it like another Elgg plugin and set the desired cron interval in the plugin's settings. Additionally, at least the cronjob for this interval must be configured on your server!
 
 If you intend to use the methods included in the Expirationdate plugin within your own plugin development, read on.
+
+
+Installation
+------------
+
+1. If you have installed a previous version of the Expirationdate plugin plugin disable the plugin in the admin section of your site and then remove the expirationdate folder from the mod directory of your Elgg installation,
+2. Copy the expirationdate folder into the mod directory of your Elgg installation,
+3. Enable the Expirationdate plugin plugin in the admin section of your site and set the desired cron interval in the Expirationdate plugin settings.
 
 
 Usage

@@ -1,6 +1,15 @@
 Changelog
 ==========
 
+2.3.4
+------
+
+* Requires Elgg 2.3.0 at minimum,
+* Usage of ElggBatch for looping through entities with expirationdate metadata within the cronjob,
+* Create expirationdate metadata with site_guid as owner_guid,
+* Usage of ACCESS_PUBLIC const instead of int value to define access_id of expirationdate metadata,
+* Cast expirationdate_disable_only metadata value to int on creation of corresponding metadata.
+
 1.10.4
 ------
 

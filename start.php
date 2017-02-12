@@ -5,10 +5,10 @@
  * @package ExpirationDate
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Brett Profitt
- * @copyright Brett Profitt 2008-2015
+ * @copyright Brett Profitt 2008
  * @link http://eschoolconsultants.com
  *
- * (c) iionly 2012-2015 for Elgg 1.8 onwards
+ * (c) iionly 2012 for Elgg 1.8 onwards
  */
 
 // Initialise plugin
@@ -52,15 +52,21 @@ function expirationdate_expire_entities($verbose=true) {
 	$access_status = access_get_show_hidden_status();
 	access_show_hidden_entities(true);
 
-	if (!$entities = elgg_get_entities_from_metadata(array('metadata_names' => 'expirationdate', 'limit' => false))) {
+	$entities = new ElggBatch('elgg_get_entities_from_metadata', array(
+		'metadata_name' => 'expirationdate',
+		'limit' => false,
+	));
+
+	if (!$entities) {
 		// no entities that need to expire.
 		return true;
 	}
 
+	$entities->setIncrementOffset(false);
 	foreach ($entities as $entity) {
 		if ($entity->expirationdate < $now) {
 			$guid = $entity->guid;
-			if (!elgg_trigger_plugin_hook('expirationdate:expire_entity', $entity->type, array('entity'=>$entity), true)) {
+			if (!elgg_trigger_plugin_hook('expirationdate:expire_entity', $entity->type, array('entity' => $entity), true)) {
 				continue;
 			}
 
@@ -80,7 +86,7 @@ function expirationdate_expire_entities($verbose=true) {
 				}
 			}
 		} else {
-			if (!elgg_trigger_plugin_hook('expirationdate:will_expire_entity', $entity->type, array('expirationdate'=>$entity->expirationdate, 'entity'=>$entity), true)) {
+			if (!elgg_trigger_plugin_hook('expirationdate:will_expire_entity', $entity->type, array('expirationdate' => $entity->expirationdate, 'entity' => $entity), true)) {
 				continue;
 			}
 		}
@@ -105,8 +111,10 @@ function expirationdate_expire_entities($verbose=true) {
 function expirationdate_set($id, $expiration, $disable_only=false, $type='entities') {
 
 	$access = elgg_set_ignore_access(true);
+	$access_status = access_get_show_hidden_status();
+	access_show_hidden_entities(true);
 
-	if (!$date=strtotime($expiration)) {
+	if (!($date = strtotime($expiration))) {
 		return false;
 	}
 
@@ -117,15 +125,17 @@ function expirationdate_set($id, $expiration, $disable_only=false, $type='entiti
 	if ($type == 'entities') {
 		// @todo what about disabled entities?
 		// Allow them to expire?
-		if (!$entity=get_entity($id)) {
+		if (!($entity = get_entity($id))) {
 			return false;
 		}
-		$return = create_metadata($id, 'expirationdate', $date, 'integer', -1, 2);
-		$return = create_metadata($id, 'expirationdate_disable_only', $disable_only, 'integer', -1, 2);
+		$site_guid = elgg_get_site_entity()->guid;
+		$return = create_metadata($id, 'expirationdate', $date, 'integer', $site_guid, ACCESS_PUBLIC);
+		$return = create_metadata($id, 'expirationdate_disable_only', (int)$disable_only, 'integer', $site_guid, ACCESS_PUBLIC);
 	} else {
 		// bugger all.
 	}
 
+	access_show_hidden_entities($access_status);
 	elgg_set_ignore_access($access);
 
 	return $return;
@@ -141,12 +151,15 @@ function expirationdate_set($id, $expiration, $disable_only=false, $type='entiti
 function expirationdate_unset($id, $type='entities') {
 
 	$access = elgg_set_ignore_access(true);
+	$access_status = access_get_show_hidden_status();
+	access_show_hidden_entities(true);
 
 	if ($type == 'entities') {
 		elgg_delete_metadata(array('guid' => $id, 'metadata_name' => 'expirationdate'));
 		elgg_delete_metadata(array('guid' => $id, 'metadata_name' => 'expirationdate_disable_only'));
 	}
-
+	
+	access_show_hidden_entities($access_status);
 	elgg_set_ignore_access($access);
 
 	return true;
