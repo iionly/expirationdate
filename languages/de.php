@@ -3,7 +3,7 @@
  * Expirationdate German language file
  */
 
-return array(
+return [
 	'expirationdate:minute' => '1 Minute',
 	'expirationdate:fiveminute' => '5 Minuten',
 	'expirationdate:fifteenminute' => '15 Minuten',
@@ -13,5 +13,5 @@ return array(
 	'expirationdate:weekly' => '1 Woche',
 	'expirationdate:monthly' => '1 Monat',
 	'expirationdate:yearly' => '1 Jahr',
-	'expirationdate:period' => 'Intervall für Suche nach Entitäten mit abgelaufenem Verfallsdatum: '
-);
+	'expirationdate:period' => 'Intervall für Suche nach Entitäten mit abgelaufenem Verfallsdatum: ',
+];

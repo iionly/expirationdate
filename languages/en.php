@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 	'expirationdate:minute' => '1 minute',
 	'expirationdate:fiveminute' => '5 minutes',
 	'expirationdate:fifteenminute' => '15 minutes',
@@ -10,5 +10,5 @@ return array(
 	'expirationdate:weekly' => '1 week',
 	'expirationdate:monthly' => '1 month',
 	'expirationdate:yearly' => '1 year',
-	'expirationdate:period' => 'Check for expired entities every: '
-);
+	'expirationdate:period' => 'Check for expired entities every: ',
+];

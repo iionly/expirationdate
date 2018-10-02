@@ -1,8 +1,13 @@
 Changelog
-==========
+=========
+
+2.3.5
+-----
+
+* Just some code cleanup and usage of Elgg 2.3 forms API functions.
 
 2.3.4
-------
+-----
 
 * Requires Elgg 2.3.0 at minimum,
 * Usage of ElggBatch for looping through entities with expirationdate metadata within the cronjob,

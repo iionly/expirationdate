@@ -1,8 +1,8 @@
 Expirationdate plugin for Elgg 2.3 and newer Elgg 2.X
 =====================================================
 
-Latest Version: 2.3.4  
-Released: 2017-02-12  
+Latest Version: 2.3.5  
+Released: 2018-09-09  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
 Copyright: (c) Brett Profitt (Original developer) / iionly (for Elgg 1.8 onwards)
