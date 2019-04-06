@@ -19,18 +19,14 @@ elgg_register_event_handler('init', 'system', 'expirationdate_init');
  *
  */
 function expirationdate_init() {
-	elgg_register_plugin_hook_handler('cron', elgg_get_plugin_setting('period', 'expirationdate', 'fiveminute'), 'expirationdate_cron');
+	elgg_register_plugin_hook_handler('cron', elgg_get_plugin_setting('period', 'expirationdate'), 'expirationdate_cron');
 }
 
 /**
  * Hook for cron event.
  *
- * @param $event
- * @param $object_type
- * @param $object
- * @return unknown_type
  */
-function expirationdate_cron($event, $object_type, $object) {
+function expirationdate_cron(\Elgg\Hook $hook) {
 	$value = expirationdate_expire_entities(false) ? 'Ok' : 'Fail';
 	return 'expirationdate: ' . $value;
 }
@@ -46,7 +42,7 @@ function expirationdate_expire_entities($verbose=true) {
 	$access_status = access_get_show_hidden_status();
 	access_show_hidden_entities(true);
 
-	$entities = elgg_get_entities_from_metadata([
+	$entities = elgg_get_entities([
 		'metadata_name' => 'expirationdate',
 		'limit' => false,
 		'batch' => true,
@@ -120,12 +116,12 @@ function expirationdate_set($id, $expiration, $disable_only=false, $type='entiti
 	if ($type == 'entities') {
 		// @todo what about disabled entities?
 		// Allow them to expire?
-		if (!($entity = get_entity($id))) {
+		$entity = get_entity($id);
+		if (!$entity) {
 			return false;
 		}
-		$site_guid = elgg_get_site_entity()->guid;
-		$return = create_metadata($id, 'expirationdate', $date, 'integer', $site_guid, ACCESS_PUBLIC);
-		$return = create_metadata($id, 'expirationdate_disable_only', (int) $disable_only, 'integer', $site_guid, ACCESS_PUBLIC);
+		$return = $entity->setMetadata('expirationdate', $date, 'integer');
+		$return = $entity->setMetadata('expirationdate_disable_only', (int) $disable_only, 'integer');
 	} else {
 		// bugger all.
 	}

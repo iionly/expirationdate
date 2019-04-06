@@ -11,7 +11,7 @@
  * (c) iionly 2012 for Elgg 1.8 onwards
  */
 
-$period = elgg_get_plugin_setting('period', 'expirationdate', 'fiveminute');
+$period = elgg_get_plugin_setting('period', 'expirationdate');
 
 echo elgg_view_field([
 	'#type' => 'select',

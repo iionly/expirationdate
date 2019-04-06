@@ -3,7 +3,7 @@
 	<name>Expirationdate</name>
 	<id>expirationdate</id>
 	<author>iionly (for Elgg 1.8 onwards) / Brett Profitt</author>
-	<version>2.3.5</version>
+	<version>3.0.0</version>
 	<category>enhancement</category>
 	<description>Provides a method to set an expiration date for entities and to delete the entities after that date.</description>
 	<website>https://github.com/iionly</website>
@@ -11,6 +11,6 @@
 	<license>GNU Public License version 2</license>
 	<requires>
 		<type>elgg_release</type>
-		<version>2.3.0</version>
+		<version>3.0.0</version>
 	</requires>
 </plugin_manifest>
