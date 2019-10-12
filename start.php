@@ -38,56 +38,53 @@ function expirationdate_cron(\Elgg\Hook $hook) {
 function expirationdate_expire_entities($verbose=true) {
 	$now = time();
 
-	$access = elgg_set_ignore_access(true);
-	$access_status = access_get_show_hidden_status();
-	access_show_hidden_entities(true);
+	elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($verbose, $now) {
 
-	$entities = elgg_get_entities([
-		'metadata_name' => 'expirationdate',
-		'limit' => false,
-		'batch' => true,
-		'batch_inc_offset' => false,
-	]);
+		$entities = elgg_get_entities([
+			'metadata_name' => 'expirationdate',
+			'limit' => false,
+			'batch' => true,
+			'batch_inc_offset' => false,
+		]);
 
-	if (!$entities) {
-		// no entities that need to expire.
-		return true;
-	}
+		if (!$entities) {
+			// no entities that need to expire.
+			return true;
+		}
 
-	foreach ($entities as $entity) {
-		if ($entity->expirationdate < $now) {
-			$guid = $entity->guid;
-			if (!elgg_trigger_plugin_hook('expirationdate:expire_entity', $entity->type, ['entity' => $entity], true)) {
-				continue;
-			}
+		foreach ($entities as $entity) {
+			if ($entity->expirationdate < $now) {
+				$guid = $entity->guid;
+				if (!elgg_trigger_plugin_hook('expirationdate:expire_entity', $entity->type, ['entity' => $entity], true)) {
+					continue;
+				}
 
-			// call the standard delete to allow for triggers, etc.
-			if ($entity->expirationdate_disable_only == 1) {
-				if ($entity->disable()) {
-					$return = expirationdate_unset($entity->getGUID());
-					$msg = "Disabled $guid<br>\n";
+				// call the standard delete to allow for triggers, etc.
+				if ($entity->expirationdate_disable_only == 1) {
+					if ($entity->disable()) {
+						$return = expirationdate_unset($entity->getGUID());
+						$msg = "Disabled $guid<br>\n";
+					} else {
+						$msg = "Couldn't disable $guid<br>\n";
+					}
 				} else {
-					$msg = "Couldn't disable $guid<br>\n";
+					if ($entity->delete()) {
+						$msg = "Deleted $guid<br>\n";
+					} else {
+						$msg = "Couldn't delete $guid<br>\n";
+					}
 				}
 			} else {
-				if ($entity->delete()) {
-					$msg = "Deleted $guid<br>\n";
-				} else {
-					$msg = "Couldn't delete $guid<br>\n";
+				if (!elgg_trigger_plugin_hook('expirationdate:will_expire_entity', $entity->type, ['expirationdate' => $entity->expirationdate, 'entity' => $entity], true)) {
+					continue;
 				}
 			}
-		} else {
-			if (!elgg_trigger_plugin_hook('expirationdate:will_expire_entity', $entity->type, ['expirationdate' => $entity->expirationdate, 'entity' => $entity], true)) {
-				continue;
+
+			if ($verbose) {
+				print $msg;
 			}
 		}
-
-		if ($verbose) {
-			print $msg;
-		}
-	}
-	access_show_hidden_entities($access_status);
-	elgg_set_ignore_access($access);
+	});
 
 	return true;
 }
@@ -101,33 +98,30 @@ function expirationdate_expire_entities($verbose=true) {
  */
 function expirationdate_set($id, $expiration, $disable_only=false, $type='entities') {
 
-	$access = elgg_set_ignore_access(true);
-	$access_status = access_get_show_hidden_status();
-	access_show_hidden_entities(true);
+	elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($id, $expiration, $disable_only, $type) {
 
-	if (!($date = strtotime($expiration))) {
-		return false;
-	}
-
-	// clear out any existing expiration
-	expirationdate_unset($id, $type);
-	$return = false;
-
-	if ($type == 'entities') {
-		// @todo what about disabled entities?
-		// Allow them to expire?
-		$entity = get_entity($id);
-		if (!$entity) {
+		if (!($date = strtotime($expiration))) {
 			return false;
 		}
-		$return = $entity->setMetadata('expirationdate', $date, 'integer');
-		$return = $entity->setMetadata('expirationdate_disable_only', (int) $disable_only, 'integer');
-	} else {
-		// bugger all.
-	}
 
-	access_show_hidden_entities($access_status);
-	elgg_set_ignore_access($access);
+		// clear out any existing expiration
+		expirationdate_unset($id, $type);
+		$return = false;
+
+		if ($type == 'entities') {
+			// @todo what about disabled entities?
+			// Allow them to expire?
+			$entity = get_entity($id);
+			if (!$entity) {
+				return false;
+			}
+			$return = $entity->setMetadata('expirationdate', $date, 'integer');
+			$return = $entity->setMetadata('expirationdate_disable_only', (int) $disable_only, 'integer');
+		} else {
+			// bugger all.
+		}
+
+	});
 
 	return $return;
 }
@@ -141,23 +135,20 @@ function expirationdate_set($id, $expiration, $disable_only=false, $type='entiti
  */
 function expirationdate_unset($id, $type='entities') {
 
-	$access = elgg_set_ignore_access(true);
-	$access_status = access_get_show_hidden_status();
-	access_show_hidden_entities(true);
+	elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($id, $type) {
 
-	if ($type == 'entities') {
-		elgg_delete_metadata([
-			'guid' => $id,
-			'metadata_name' => 'expirationdate',
-		]);
-		elgg_delete_metadata([
-			'guid' => $id,
-			'metadata_name' => 'expirationdate_disable_only',
-		]);
-	}
+		if ($type == 'entities') {
+			elgg_delete_metadata([
+				'guid' => $id,
+				'metadata_name' => 'expirationdate',
+			]);
+			elgg_delete_metadata([
+				'guid' => $id,
+				'metadata_name' => 'expirationdate_disable_only',
+			]);
+		}
 	
-	access_show_hidden_entities($access_status);
-	elgg_set_ignore_access($access);
+	});
 
 	return true;
 }
