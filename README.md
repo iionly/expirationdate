@@ -1,7 +1,7 @@
-Expirationdate plugin for Elgg 4.0 and newer Elgg 4.X
+Expirationdate plugin for Elgg 5.0 and newer Elgg 5.X
 =====================================================
 
-Latest Version: 4.0.0  
+Latest Version: 5.0.0  
 Released: 2024-11-01  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
@@ -37,14 +37,14 @@ Install and enable the Expirationdate plugin.  Be sure to set the plugin's perio
 
 Within your plugin, set entity expiration dates by saying:
 
-    expirationdate_set($entity->guid, $expiration_date_string, bool);
+    \Expirationdate::expirationdate_set($entity->guid, $expiration_date_string, bool);
 
 where $expiration_date_string is a valid strtotime() string. If the 3rd parameter is true, the entity will be disabled instead of deleted.
 
 
 Unset expiration dates by saying:
 
-    expirationdate_unset($entity->guid);
+    \Expirationdate::expirationdate_unset($entity->guid);
 
 Before entities are deleted the plugin_hook expirationdate:expirate_entity is called with $param set as:
 

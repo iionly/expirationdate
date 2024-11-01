@@ -1,19 +1,17 @@
 <?php
 
-require_once(dirname(__FILE__) . '/lib/functions.php');
-
 return [
 	'plugin' => [
 		'name' => 'Expirationdate',
-		'version' => '4.0.0',
+		'version' => '5.0.0',
 	],
 	'settings' => [
 		'period' => 'fiveminute',
 	],
-	'hooks' => [
+	'events' => [
 		'cron' => [
 			'all' => [
-				"\ExpirationdateHooks::expirationdate_cron" => [],
+				"\ExpirationdateEvents::expirationdate_cron" => [],
 			],
 		],
 	],

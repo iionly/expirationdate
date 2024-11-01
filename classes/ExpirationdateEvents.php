@@ -11,19 +11,19 @@
  * (c) iionly 2012 for Elgg 1.8 onwards
  */
 
-class ExpirationdateHooks {
+class ExpirationdateEvents {
 	/**
 	* Hook for cron event.
 	*
 	*/
-	public static function expirationdate_cron(\Elgg\Hook $hook) {
-		$period = $hook->getType();
+	public static function expirationdate_cron(\Elgg\Event $event) {
+		$period = $event->getType();
 
 		if ($period !== elgg_get_plugin_setting('period', 'expirationdate')) {
 			return;
 		}
 
-		$value = expirationdate_expire_entities(false) ? 'Ok' : 'Fail';
+		$value = \ExpirationdateFunctions::expirationdate_expire_entities(false) ? 'Ok' : 'Fail';
 		return 'expirationdate: ' . $value;
 	}
 }

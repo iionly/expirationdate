@@ -1,11 +1,17 @@
 Changelog
 =========
 
+5.0.0
+-----
+
+* Requires Elgg 5.0 at minimum,
+* Updated to work on Elgg 5.
+
 4.0.0
 -----
 
 * Requires Elgg 4.0 at minimum,
-* Updated to work on Elgg 4.0.
+* Updated to work on Elgg 4.
 
 3.3.0
 -----
